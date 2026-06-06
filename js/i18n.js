@@ -1,5 +1,5 @@
 /* Global Logistics Empire — site i18n loader
- * Loads /i18n/{code}.json, applies translations to [data-i18n] / [data-i18n-attr],
+ * Loads /locales/{code}.json, applies translations to [data-i18n] / [data-i18n-attr],
  * remembers choice in localStorage, falls back to EN.
  */
 (function () {
@@ -31,7 +31,12 @@
   ];
   const LS_KEY = 'gle_site_lang';
   const FALLBACK = 'en';
-  const BASE_PATH = 'i18n/';
+  const BASE_PATH = 'locales/';
+  // Map menu code -> possible filenames in /locales/ (first existing wins)
+  const FILE_ALIASES = {
+    'uk': ['uk', 'ua'],
+    'pt-br': ['pt-br', 'pt-BR', 'ptbr'],
+  };
   const cache = {};
   let fallbackDict = null;
 
@@ -39,24 +44,30 @@
     const saved = localStorage.getItem(LS_KEY);
     if (saved && LANGUAGES.some(l => l.code === saved)) return saved;
     const nav = (navigator.language || 'en').toLowerCase();
-    if (nav.startsWith('pt-br') || nav === 'pt-br' || nav.startsWith('pt')) return 'pt-br';
+    if (nav.startsWith('pt-br') || nav.startsWith('pt')) return 'pt-br';
     const base = nav.split('-')[0];
     const map = { ua: 'uk' };
     const code = map[base] || base;
     return LANGUAGES.some(l => l.code === code) ? code : FALLBACK;
   }
 
+  async function fetchFirst(names) {
+    for (const n of names) {
+      try {
+        const res = await fetch(BASE_PATH + n + '.json', { cache: 'no-cache' });
+        if (res.ok) return await res.json();
+      } catch (_) { /* try next */ }
+    }
+    return null;
+  }
+
   async function loadDict(code) {
     if (cache[code]) return cache[code];
-    try {
-      const res = await fetch(BASE_PATH + code + '.json', { cache: 'no-cache' });
-      if (!res.ok) throw new Error('http ' + res.status);
-      cache[code] = await res.json();
-      return cache[code];
-    } catch (e) {
-      console.warn('[i18n] failed to load', code, e);
-      return null;
-    }
+    const names = FILE_ALIASES[code] || [code];
+    const dict = await fetchFirst(names);
+    if (dict) { cache[code] = dict; return dict; }
+    console.warn('[i18n] missing locale file for', code, '— tried', names);
+    return null;
   }
 
   function applyDict(dict) {
@@ -100,10 +111,7 @@
       btn.className = 'lang-item' + (l.code === active ? ' active' : '');
       btn.setAttribute('role', 'option');
       btn.innerHTML = '<span class="flag">' + l.flag + '</span><span>' + l.label + '</span><span class="code">' + l.code.toUpperCase() + '</span>';
-      btn.addEventListener('click', () => {
-        closeMenu();
-        setLanguage(l.code);
-      });
+      btn.addEventListener('click', () => { closeMenu(); setLanguage(l.code); });
       menu.appendChild(btn);
     });
   }
@@ -119,26 +127,17 @@
     if (b) b.setAttribute('aria-expanded', 'false');
   }
 
-  // --- TOC drawer (mobile) ---
   function initToc() {
     const btn = document.getElementById('tocBtn');
     const drawer = document.getElementById('tocDrawer');
     if (!btn || !drawer) return;
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      drawer.classList.toggle('open');
-    });
-    drawer.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => drawer.classList.remove('open'));
-    });
+    btn.addEventListener('click', (e) => { e.stopPropagation(); drawer.classList.toggle('open'); });
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => drawer.classList.remove('open')));
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('#tocDrawer') && !e.target.closest('#tocBtn')) {
-        drawer.classList.remove('open');
-      }
+      if (!e.target.closest('#tocDrawer') && !e.target.closest('#tocBtn')) drawer.classList.remove('open');
     });
   }
 
-  // --- Feedback form ---
   function initFeedback() {
     const form = document.getElementById('feedbackForm');
     if (!form) return;
@@ -149,7 +148,6 @@
       if (!msg) return;
       const subject = encodeURIComponent('GLE feedback from ' + (name || 'anonymous'));
       const body = encodeURIComponent(msg + '\n\n— ' + (name || 'anonymous'));
-      // mailto fallback — opens user's mail client
       window.location.href = 'mailto:akrijsoft@gmail.com?subject=' + subject + '&body=' + body;
       const ok = document.getElementById('feedbackOk');
       if (ok) ok.style.display = 'block';
@@ -165,9 +163,7 @@
         const open = document.getElementById('langMenu').classList.contains('open');
         open ? closeMenu() : openMenu();
       });
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.lang-switch')) closeMenu();
-      });
+      document.addEventListener('click', (e) => { if (!e.target.closest('.lang-switch')) closeMenu(); });
     }
     initToc();
     initFeedback();
