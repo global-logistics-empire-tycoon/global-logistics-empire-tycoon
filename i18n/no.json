@@ -1,0 +1,103 @@
+{
+  "meta.title": "Global Logistics Empire — Bygg ditt globale transportimperium",
+  "meta.description": "Global Logistics Empire er en omfattende tycoon- og logistikksimulator. Administrer lastebiler, tog, skip og fly, ansett ansatte, forsk på ny teknologi, bygg infrastruktur og skap ditt eget imperium.",
+  "nav.brand": "Global Logistics Empire",
+  "nav.toc": "Innhold",
+
+  "toc.title": "Sideinnhold",
+  "toc.hero": "Introduksjon",
+  "toc.about_me": "Om meg",
+  "toc.numbers": "Tall",
+  "toc.fleet": "Flåte",
+  "toc.features": "Funksjoner",
+  "toc.upgrades": "Oppgraderinger",
+  "toc.staff": "Ansatte og dispatcher",
+  "toc.research": "Forskning og bygninger",
+  "toc.meta_systems": "Fremgang",
+  "toc.trip": "Oppdragsforløp",
+  "toc.tech": "Teknologi",
+  "toc.roadmap": "Fremtidig utvikling",
+  "toc.feedback": "Forslag og tilbakemeldinger",
+
+  "hero.eyebrow": "🌍 Transport- og logistikktycoon",
+  "hero.badge_play": "Tilgjengelig på Google Play",
+  "hero.title_main": "Global Logistics Empire",
+  "hero.title_tycoon": "Tycoon",
+  "hero.lead": "Bygg et globalt logistikkimperium — fra én varebil i en liten garasje til en verdensomspennende operatør med lastebiler, tog, skip og fly.",
+  "hero.btn_play_small": "Last ned på",
+  "hero.btn_play_main": "Google Play",
+  "hero.btn_explore": "Utforsk funksjoner",
+  "hero.info_title": "Spillets fokus",
+  "hero.info_desc": "For spillere som liker tycoon-spill, transport, optimalisering og langsiktig vekst.",
+  "hero.stat1_label": "Hovedtema",
+  "hero.stat1_val": "Logistikkstrategi",
+  "hero.stat2_label": "Gameplay",
+  "hero.stat2_val": "Flåtestyring",
+  "hero.stat3_label": "Fremgang",
+  "hero.stat3_val": "Garasje → imperium",
+  "hero.stat4_label": "Stil",
+  "hero.stat4_val": "Tycoon-simulering",
+
+  "about.title": "Om meg",
+  "about.lead": "Hei — jeg er utvikleren bak Global Logistics Empire.",
+  "about.li1": "Jeg er en amatørutvikler — dette er et lidenskapsprosjekt.",
+  "about.li2": "Spillet er fortsatt under utvikling.",
+  "about.li3": "Utviklingen går saktere fordi jeg jobber med det på fritiden.",
+  "about.li4": "Målet er å forbedre spillet sammen med spillerne.",
+
+  "numbers.title": "Spillet i tall",
+  "numbers.desc": "Masse innhold å planlegge, oppgradere og mestre.",
+  "numbers.n1": "Transporttyper",
+  "numbers.n2": "Kjøretøyoppgraderingsnivåer",
+  "numbers.n3": "Infrastrukturnivåer",
+  "numbers.n4": "Prestasjoner",
+  "numbers.n5": "SVG-kjøretøyformer",
+  "numbers.n6": "Språk",
+  "numbers.n7": "Spillhastigheter",
+  "numbers.n8": "Premium auto-dispatcher",
+
+  "fleet.title": "Fire transporttyper, én global flåte",
+  "fleet.desc": "Hver type har sin egen fysikk, kapasitet og rutenettverk.",
+  "fleet.road_title": "Vei",
+  "fleet.road_desc": "Varebiler, lastebiler, kjølebiler, tankbiler og pansrede kjøretøy",
+  "fleet.rail_title": "Jernbane",
+  "fleet.rail_desc": "Godstog, containertog, bulktog og ekspresstog",
+  "fleet.sea_title": "Sjø",
+  "fleet.sea_desc": "Kystskip, lasteskip, containerskip, tankskip og kjøleskip",
+  "fleet.air_title": "Luft",
+  "fleet.air_desc": "Små, mellomstore og store fraktfly",
+
+  "features.title": "Nøkkelfunksjoner",
+  "features.desc": "Dype simuleringssystemer i et brukervennlig mobilgrensesnitt.",
+
+  "upgrades.title": "Kjøretøytilpasning og oppgraderinger",
+  "upgrades.desc": "Hvert kjøretøy er unikt — gi det navn, oppgrader det og hold det i drift.",
+
+  "staff.title": "Ansatte, ledere og dispatcher",
+  "staff.desc": "Et globalt imperium kan ikke styres alene.",
+
+  "research.title": "Forskning og infrastruktur",
+  "research.desc": "Lås opp avanserte funksjoner gjennom forskning og bygging.",
+
+  "meta_systems.title": "Fremgang, belønninger og live-innhold",
+  "meta_systems.desc": "Langsiktige mål som holder imperiet voksende i hundrevis av timer.",
+
+  "trip.title": "Hvordan et oppdrag faktisk fungerer",
+  "trip.desc": "Simulasjonsmotoren kjører hvert 5. spillminutt og støtter hastigheter fra 1× til 8×.",
+
+  "tech.title": "For mobil, klar for verden",
+  "tech.desc": "Native Android via Capacitor med full lokalisering.",
+
+  "roadmap.title": "Fremtidig utvikling",
+  "roadmap.desc": "Hva som er planlagt videre.",
+  "roadmap.note": "For tiden arbeides det med forbedret kjøretøygrafikk.",
+
+  "feedback.title": "Forslag og tilbakemeldinger",
+  "feedback.desc": "Fortell hva du ønsker å se i spillet.",
+
+  "cta.title": "Laget for tycoon-spillere",
+  "cta.desc": "Hvis du liker ruteplanlegging, effektivisering og bedriftsvekst, er dette spillet for deg.",
+
+  "footer.title": "Global Logistics Empire",
+  "footer.text": "Prosjektets offisielle nettside."
+}
