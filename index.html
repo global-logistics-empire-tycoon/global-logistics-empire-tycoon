@@ -210,6 +210,24 @@
     </div>
   </header>
 
+  <!-- ABOUT ME -->
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="about.title">About me</h2>
+        <p data-i18n="about.lead">Hi — I'm the developer behind Global Logistics Empire.</p>
+      </div>
+      <div class="big-card">
+        <ul style="padding-left:18px;color:var(--muted);font-size:1rem;line-height:1.9">
+          <li data-i18n="about.li1">I'm an amateur developer — this is a passion project.</li>
+          <li data-i18n="about.li2">The game is still in development and I keep adding content.</li>
+          <li data-i18n="about.li3">Development is slower because I work on it in my free time.</li>
+          <li data-i18n="about.li4">The goal is to gradually improve the game together with players.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- KEY NUMBERS -->
   <section>
     <div class="wrap">
@@ -446,6 +464,53 @@
     </div>
   </section>
 
+  <!-- ROADMAP -->
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="roadmap.title">Future development</h2>
+        <p data-i18n="roadmap.desc">What's planned next.</p>
+      </div>
+      <div class="big-card" style="margin-bottom:18px;text-align:center">
+        <p style="color:var(--gold);font-weight:700" data-i18n="roadmap.note">Currently working on: improved vehicle graphics.</p>
+      </div>
+      <div class="cards">
+        <div class="card"><div class="icon blue">🎨</div><h3 data-i18n="roadmap.f1_title">Better graphics</h3><p data-i18n="roadmap.f1_desc">Improved vehicle, building and UI artwork.</p></div>
+        <div class="card"><div class="icon gold">🔊</div><h3 data-i18n="roadmap.f2_title">In-game sounds</h3><p data-i18n="roadmap.f2_desc">Engine sounds, ambient audio and UI feedback.</p></div>
+        <div class="card"><div class="icon green">🏅</div><h3 data-i18n="roadmap.f3_title">Online leaderboards</h3><p data-i18n="roadmap.f3_desc">Compete worldwide on revenue, fleet size and milestones.</p></div>
+        <div class="card"><div class="icon purple">🔗</div><h3 data-i18n="roadmap.f4_title">Combined contracts</h3><p data-i18n="roadmap.f4_desc">Multi-stage jobs chaining road, rail, sea and air for bigger payouts.</p></div>
+        <div class="card"><div class="icon red">🗺️</div><h3 data-i18n="roadmap.f5_title">More realistic map</h3><p data-i18n="roadmap.f5_desc">Improved geography, road network and regional detail.</p></div>
+        <div class="card"><div class="icon blue">🤝</div><h3 data-i18n="roadmap.f6_title">Co-op mode</h3><p data-i18n="roadmap.f6_desc">Play with friends and build a shared logistics empire.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEEDBACK -->
+  <section id="feedback">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="feedback.title">Suggestions & feedback</h2>
+        <p data-i18n="feedback.desc">Tell me what you'd like to see in the game.</p>
+      </div>
+      <div class="big-card" style="max-width:640px;margin:0 auto">
+        <form id="feedbackForm">
+          <div style="margin-bottom:14px">
+            <label style="display:block;color:var(--text);font-weight:700;margin-bottom:6px" data-i18n="feedback.name_label">Your name</label>
+            <input name="name" type="text" maxlength="80" data-i18n-placeholder="feedback.name_ph" placeholder="How should I call you? (optional)"
+              style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);font:inherit" />
+          </div>
+          <div style="margin-bottom:14px">
+            <label style="display:block;color:var(--text);font-weight:700;margin-bottom:6px" data-i18n="feedback.msg_label">Your message</label>
+            <textarea name="message" rows="5" maxlength="2000" required data-i18n-placeholder="feedback.msg_ph" placeholder="What would you like to see in the game?"
+              style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);font:inherit;resize:vertical"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" data-i18n="feedback.submit" style="border:0;cursor:pointer">Send</button>
+          <p id="feedbackOk" style="display:none;margin-top:14px;color:var(--green)" data-i18n="feedback.sent">Thanks! Your mail client should open now.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <!-- TAGS / CTA -->
   <section>
     <div class="wrap">
@@ -549,6 +614,28 @@
         if (attr) el.setAttribute(attr, val);
         else el.textContent = val;
       });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        const val = (dict && dict[key]) || (fallbackDict && fallbackDict[key]);
+        if (val != null) el.setAttribute('placeholder', val);
+      });
+    }
+
+    function initFeedback(){
+      const form = document.getElementById('feedbackForm');
+      if (!form) return;
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = (form.querySelector('[name="name"]').value || '').trim();
+        const msg  = (form.querySelector('[name="message"]').value || '').trim();
+        if (!msg) return;
+        const subject = encodeURIComponent('GLE feedback from ' + (name || 'anonymous'));
+        const body = encodeURIComponent(msg + '\n\n— ' + (name || 'anonymous'));
+        window.location.href = 'mailto:AkrijSoft@gmail.com?subject=' + subject + '&body=' + body;
+        const ok = document.getElementById('feedbackOk');
+        if (ok) ok.style.display = 'block';
+        form.reset();
+      });
     }
 
     async function setLanguage(code){
@@ -593,6 +680,7 @@
       document.addEventListener('click', (e) => {
         if (!e.target.closest('.lang-switch')) closeMenu();
       });
+      initFeedback();
       setLanguage(detectLang());
     });
   })();
