@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="meta.title">Global Logistics Empire — Build a Worldwide Transport Tycoon</title>
+  <meta name="description" data-i18n-attr="content" data-i18n="meta.description" content="Global Logistics Empire is a deep tycoon & logistics simulation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#08111f;--bg-soft:#0f1d33;--surface:#132742;--surface-2:#183455;
+      --line:rgba(255,255,255,0.08);--text:#eef4ff;--muted:#abc0d8;
+      --primary:#53c7ff;--primary-dark:#0ea5e9;--green:#22c55e;--gold:#f59e0b;
+      --red:#ef4444;--purple:#a78bfa;--shadow:0 20px 60px rgba(0,0,0,.35);
+      --radius:24px;--radius-sm:16px;--max:1140px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);line-height:1.65;
+      background:radial-gradient(circle at top left, rgba(83,199,255,.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(245,158,11,.10), transparent 22%),
+        linear-gradient(180deg, var(--bg) 0%, #0b1627 100%);min-height:100vh}
+    a{text-decoration:none;color:inherit}
+    .wrap{width:min(var(--max), calc(100% - 32px));margin:0 auto}
+
+    /* TOP BAR + LANGUAGE SWITCHER */
+    .topbar{
+      position:sticky;top:0;z-index:100;
+      backdrop-filter:blur(14px);
+      background:rgba(8,17,31,.78);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:12px}
+    .brand-mini{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.02em;color:var(--text)}
+    .brand-mini .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--green));box-shadow:0 0 14px rgba(83,199,255,.6)}
+    .brand-mini span{font-size:.95rem;text-transform:uppercase}
+
+    .lang-switch{position:relative}
+    .lang-current{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 14px;border-radius:999px;
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--text);font-weight:700;font-size:.9rem;cursor:pointer;
+      transition:background .2s ease, transform .2s ease;
+    }
+    .lang-current:hover{background:rgba(255,255,255,.10);transform:translateY(-1px)}
+    .lang-current .flag{font-size:1.1rem;line-height:1}
+    .lang-current .chev{opacity:.7;font-size:.7rem;margin-left:2px}
+
+    .lang-menu{
+      position:absolute;top:calc(100% + 8px);right:0;
+      width:min(320px, 86vw);max-height:60vh;overflow:auto;
+      background:rgba(15,29,51,.98);
+      border:1px solid var(--line);border-radius:18px;
+      box-shadow:0 24px 60px rgba(0,0,0,.55);
+      padding:8px;display:none;
+      grid-template-columns:repeat(2,1fr);gap:4px;
+    }
+    .lang-menu.open{display:grid}
+    .lang-item{
+      display:flex;align-items:center;gap:10px;
+      padding:9px 12px;border-radius:12px;cursor:pointer;
+      background:transparent;border:1px solid transparent;
+      color:var(--text);font-weight:600;font-size:.88rem;text-align:left;
+      transition:background .15s ease;
+    }
+    .lang-item:hover{background:rgba(83,199,255,.10)}
+    .lang-item.active{background:rgba(83,199,255,.14);border-color:rgba(83,199,255,.30)}
+    .lang-item .flag{font-size:1.15rem}
+    .lang-item .code{margin-left:auto;font-size:.72rem;opacity:.65;letter-spacing:.08em}
+
+    header{padding:40px 0 54px}
+    .hero{display:grid;grid-template-columns:1.15fr 0.85fr;gap:28px;align-items:center}
+    .hero-box,.info-box,.card,.cta-box,.big-card{
+      background:rgba(19,39,66,.78);border:1px solid var(--line);
+      border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(10px);
+    }
+    .hero-box{padding:34px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+      background:rgba(83,199,255,.12);color:var(--primary);border:1px solid rgba(83,199,255,.20);
+      font-weight:700;font-size:.92rem;margin-bottom:18px;flex-wrap:wrap}
+    h1{font-size:clamp(2.4rem, 5vw, 4.6rem);line-height:1.04;letter-spacing:-0.04em;margin-bottom:16px}
+    .hero-box p.lead{color:var(--muted);font-size:1.08rem;max-width:62ch}
+    .buttons{display:flex;gap:14px;flex-wrap:wrap;margin-top:26px}
+    .btn{min-height:48px;padding:0 20px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;transition:transform .2s ease, background .2s ease}
+    .btn-primary{background:linear-gradient(135deg, var(--primary), var(--primary-dark));color:#04111e}
+    .btn-secondary{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:var(--text)}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-secondary:hover{background:rgba(255,255,255,.10)}
+    .btn-play{min-height:60px;padding:0 28px;border-radius:16px;display:inline-flex;align-items:center;gap:14px;
+      background:linear-gradient(135deg,#22c55e 0%,#15803d 100%);color:#fff;font-weight:800;font-size:1.05rem;
+      box-shadow:0 16px 40px rgba(34,197,94,.35), inset 0 1px 0 rgba(255,255,255,.2);
+      border:1px solid rgba(255,255,255,.15);transition:transform .2s ease, box-shadow .2s ease, filter .2s ease}
+    .btn-play:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 22px 60px rgba(34,197,94,.55);filter:brightness(1.08)}
+    .btn-play svg{width:28px;height:28px;flex-shrink:0}
+    .btn-play .play-labels{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
+    .btn-play .play-labels small{font-size:.7rem;font-weight:600;opacity:.85;letter-spacing:.08em;text-transform:uppercase}
+    .btn-play .play-labels span{font-size:1.15rem;font-weight:900;letter-spacing:-.01em}
+    .brand-title{font-family:"Bebas Neue","Inter",sans-serif;font-weight:900;font-size:clamp(2.6rem, 6.2vw, 5.4rem);line-height:.95;letter-spacing:-.02em;margin-bottom:18px;text-transform:uppercase}
+    .brand-title .brand-main{display:block;background:linear-gradient(135deg,#eef4ff 0%,#abc0d8 60%, #53c7ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 4px 30px rgba(83,199,255,.25)}
+    .brand-title .brand-tycoon{display:block;font-size:.55em;background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.08em;margin-top:.15em}
+    .badge-play{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:#22c55e;font-weight:700;font-size:.82rem;margin-left:10px}
+    .badge-play::before{content:"";width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 12px #22c55e;animation:pulse 1.8s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .info-box{padding:26px}
+    .info-box h2{font-size:1.3rem;margin-bottom:8px;color:var(--text)}
+    .info-box p{color:var(--muted)}
+    .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+    .stat{padding:16px;border-radius:var(--radius-sm);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+    .stat span{display:block;color:var(--muted);font-size:.9rem}
+    .stat strong{display:block;margin-top:6px;font-size:1.08rem;color:var(--text)}
+    section{padding:36px 0}
+    .section-head{text-align:center;max-width:760px;margin:0 auto 28px}
+    .section-head h2{font-size:clamp(1.9rem, 3vw, 2.6rem);margin-bottom:10px;color:var(--text);letter-spacing:-0.02em}
+    .section-head p{color:var(--muted)}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .cards.two{grid-template-columns:repeat(2,1fr)}
+    .cards.four{grid-template-columns:repeat(4,1fr)}
+    .card{padding:24px}
+    .icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:1.5rem;margin-bottom:14px}
+    .icon.blue{background:rgba(83,199,255,.14);color:var(--primary)}
+    .icon.green{background:rgba(34,197,94,.14);color:var(--green)}
+    .icon.gold{background:rgba(245,158,11,.14);color:var(--gold)}
+    .icon.red{background:rgba(239,68,68,.14);color:var(--red)}
+    .icon.purple{background:rgba(167,139,250,.14);color:var(--purple)}
+    .card h3{margin-bottom:10px;font-size:1.14rem;color:var(--text)}
+    .card p{color:var(--muted);font-size:.97rem}
+    .card ul{margin-top:10px;padding-left:18px;color:var(--muted);font-size:.95rem}
+    .card ul li{margin:4px 0}
+    .big-card{padding:32px}
+    .big-card h3{font-size:1.4rem;margin-bottom:12px}
+    .big-card p{color:var(--muted)}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .fleet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:6px}
+    .fleet{padding:18px;border-radius:var(--radius-sm);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);text-align:center}
+    .fleet .em{font-size:2rem;display:block;margin-bottom:6px}
+    .fleet b{display:block;color:var(--text);font-size:1rem;margin-bottom:4px}
+    .fleet span{color:var(--muted);font-size:.88rem}
+    .numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+    .num{text-align:center;padding:18px;border-radius:var(--radius-sm);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+    .num strong{display:block;font-size:1.8rem;color:var(--primary);letter-spacing:-.02em}
+    .num span{color:var(--muted);font-size:.9rem}
+    .cta-box{padding:30px;background:linear-gradient(135deg, rgba(83,199,255,.10), rgba(34,197,94,.08));text-align:center}
+    .tag-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;justify-content:center}
+    .tag{padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--text);font-weight:700;font-size:.92rem}
+    footer{padding:40px 0 60px}
+    .footer-box{text-align:center;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:24px}
+    .footer-box strong{display:block;color:var(--text);margin-bottom:6px}
+    @media (max-width: 920px){
+      .hero,.cards,.cards.two,.cards.four,.grid-2,.fleet-grid,.numbers{grid-template-columns:1fr}
+      .cards.four{grid-template-columns:repeat(2,1fr)}
+      .fleet-grid{grid-template-columns:repeat(2,1fr)}
+      .numbers{grid-template-columns:repeat(2,1fr)}
+      header{padding:22px 0 34px}
+      .hero-box,.info-box,.card,.cta-box,.big-card{padding:22px}
+      .stats{grid-template-columns:1fr}
+      .lang-menu{width:86vw}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR with LANGUAGE SWITCHER -->
+  <div class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand-mini"><span class="dot"></span><span data-i18n="nav.brand">Global Logistics Empire</span></div>
+      <div class="lang-switch">
+        <button class="lang-current" id="langBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Change language">
+          <span class="flag" id="langFlag">🇬🇧</span>
+          <span id="langCode">EN</span>
+          <span class="chev">▼</span>
+        </button>
+        <div class="lang-menu" id="langMenu" role="listbox"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header>
+    <div class="wrap">
+      <div class="hero">
+        <div class="hero-box">
+          <span class="eyebrow"><span data-i18n="hero.eyebrow">🌍 Transport & Logistics Tycoon</span> <span class="badge-play" data-i18n="hero.badge_play">Available on Google Play</span></span>
+          <h1 class="brand-title">
+            <span class="brand-main" data-i18n="hero.title_main">Global Logistics Empire</span>
+            <span class="brand-tycoon" data-i18n="hero.title_tycoon">Tycoon</span>
+          </h1>
+          <p class="lead" data-i18n="hero.lead">Build your worldwide freight empire — from a single van in a tiny garage to a global operator commanding trucks, trains, cargo ships and aircraft across every continent.</p>
+          <div class="buttons">
+            <a href="https://play.google.com/store/apps/details?id=com.akrij23.globallogisticsempire" target="_blank" rel="noopener" class="btn-play" aria-label="Play on Google Play">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 1.7c-.4.4-.6 1-.6 1.8v17c0 .8.2 1.4.6 1.8l.1.1L13.4 12 3.7 1.6l-.1.1zm11.2 11.6l3.2 3.2-12.1 6.9c-.5.3-1 .3-1.5.1l10.4-10.2zM18.5 8.4c1 .6 1 2.1 0 2.6l-2.7 1.5-3.4-3.4 3.4-3.4 2.7 1.7z"/></svg>
+              <span class="play-labels"><small data-i18n="hero.btn_play_small">Get it on</small><span data-i18n="hero.btn_play_main">Google Play</span></span>
+            </a>
+            <a href="#features" class="btn btn-secondary" data-i18n="hero.btn_explore">Explore Features</a>
+          </div>
+        </div>
+        <div class="info-box">
+          <h2 data-i18n="hero.info_title">Game Focus</h2>
+          <p data-i18n="hero.info_desc">Designed for players who enjoy tycoon, transport, optimization and long-term business growth.</p>
+          <div class="stats">
+            <div class="stat"><span data-i18n="hero.stat1_label">Core theme</span><strong data-i18n="hero.stat1_val">Logistics strategy</strong></div>
+            <div class="stat"><span data-i18n="hero.stat2_label">Gameplay</span><strong data-i18n="hero.stat2_val">Fleet management</strong></div>
+            <div class="stat"><span data-i18n="hero.stat3_label">Progression</span><strong data-i18n="hero.stat3_val">Garage → empire</strong></div>
+            <div class="stat"><span data-i18n="hero.stat4_label">Style</span><strong data-i18n="hero.stat4_val">Tycoon simulation</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- KEY NUMBERS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="numbers.title">The game in numbers</h2>
+        <p data-i18n="numbers.desc">A massive amount of content to plan, upgrade, unlock and master.</p>
+      </div>
+      <div class="numbers">
+        <div class="num"><strong>4</strong><span data-i18n="numbers.n1">Transport modes</span></div>
+        <div class="num"><strong>33</strong><span data-i18n="numbers.n2">Vehicle upgrade levels</span></div>
+        <div class="num"><strong>10</strong><span data-i18n="numbers.n3">Infrastructure tiers</span></div>
+        <div class="num"><strong>90+</strong><span data-i18n="numbers.n4">Achievements</span></div>
+        <div class="num"><strong>22</strong><span data-i18n="numbers.n5">Vehicle SVG shapes</span></div>
+        <div class="num"><strong>24</strong><span data-i18n="numbers.n6">Languages</span></div>
+        <div class="num"><strong>1×–8×</strong><span data-i18n="numbers.n7">Game speed</span></div>
+        <div class="num"><strong>54h</strong><span data-i18n="numbers.n8">Premium auto-dispatch</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLEET -->
+  <section id="fleet">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="fleet.title">Four transport modes, one global fleet</h2>
+        <p data-i18n="fleet.desc">Every mode has its own physics, fuel logic, capacity and route network.</p>
+      </div>
+      <div class="fleet-grid">
+        <div class="fleet"><span class="em">🚚</span><b data-i18n="fleet.road_title">Road</b><span data-i18n="fleet.road_desc">Vans, trucks, refrigerated, tankers, armored</span></div>
+        <div class="fleet"><span class="em">🚆</span><b data-i18n="fleet.rail_title">Rail</b><span data-i18n="fleet.rail_desc">Freight, container, bulk, express trains</span></div>
+        <div class="fleet"><span class="em">🚢</span><b data-i18n="fleet.sea_title">Maritime</b><span data-i18n="fleet.sea_desc">Coastal, cargo, container, tanker, reefer</span></div>
+        <div class="fleet"><span class="em">✈️</span><b data-i18n="fleet.air_title">Air</b><span data-i18n="fleet.air_desc">Small, medium, large cargo planes & jets</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="features.title">Core gameplay features</h2>
+        <p data-i18n="features.desc">Deep simulation systems wrapped in a friendly mobile UI.</p>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <div class="icon blue">📋</div>
+          <h3 data-i18n="features.contracts_title">Smart contract board</h3>
+          <p data-i18n="features.contracts_desc">Contracts spawn based on reputation, slots and fleet capability. 70% originate from your depot for sensible routing.</p>
+          <ul>
+            <li data-i18n="features.contracts_li1">Feasibility check by cargo, mode and tags</li>
+            <li data-i18n="features.contracts_li2">Special contracts every 12h (or 8h with an ad)</li>
+            <li data-i18n="features.contracts_li3">Daily challenges & timed special jobs</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="icon green">🗺️</div>
+          <h3 data-i18n="features.map_title">Living world map</h3>
+          <p data-i18n="features.map_desc">Interactive Leaflet-based world with CARTO dark tiles, custom Dijkstra routing and animated vehicles travelling in real time.</p>
+          <ul>
+            <li data-i18n="features.map_li1">One-finger pan, pinch-to-zoom on mobile</li>
+            <li data-i18n="features.map_li2">Regional & inter-continental routes</li>
+            <li data-i18n="features.map_li3">Repositioning → loading → transport phases</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="icon gold">💰</div>
+          <h3 data-i18n="features.economy_title">Deep economy</h3>
+          <p data-i18n="features.economy_desc">Manage cash, loans, fuel, urea, electricity, vehicle wear, salaries, ad bonuses and global events affecting prices.</p>
+          <ul>
+            <li data-i18n="features.economy_li1">Dynamic events (war, fuel crisis, booms…)</li>
+            <li data-i18n="features.economy_li2">Reputation curve with diminishing returns</li>
+            <li data-i18n="features.economy_li3">Scaling salary & maintenance costs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VEHICLE UPGRADES -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="upgrades.title">Vehicle customization & upgrades</h2>
+        <p data-i18n="upgrades.desc">Every vehicle is an individual asset — name it, paint it, upgrade it, attach trailers and keep it running.</p>
+      </div>
+      <div class="grid-2">
+        <div class="big-card">
+          <div class="icon blue">🛠️</div>
+          <h3 data-i18n="upgrades.lv33_title">Up to Level 33 upgrades</h3>
+          <p data-i18n="upgrades.lv33_desc">Improve speed, capacity, fuel efficiency and special capabilities. Cost multipliers scale per transport mode.</p>
+          <ul style="margin-top:10px;padding-left:18px;color:var(--muted)">
+            <li data-i18n="upgrades.lv33_li1">Capability tags unlock special contracts (refrigerated, hazmat, oversized…)</li>
+            <li data-i18n="upgrades.lv33_li2">Mode-specific attachments: trailers, wagons, containers</li>
+            <li data-i18n="upgrades.lv33_li3">Energy variants — the 2nd model in road/rail groups is fully electric</li>
+          </ul>
+        </div>
+        <div class="big-card">
+          <div class="icon red">🔧</div>
+          <h3 data-i18n="upgrades.wear_title">Wear & maintenance</h3>
+          <p data-i18n="upgrades.wear_desc">Vehicles wear down with use. Managers can auto-repair when wear drops below 30%, and ad-rewards let free players keep fleets healthy.</p>
+          <ul style="margin-top:10px;padding-left:18px;color:var(--muted)">
+            <li data-i18n="upgrades.wear_li1">22 SVG shapes, colour-coded by transport mode</li>
+            <li data-i18n="upgrades.wear_li2">Custom names & emoji prefixes for identification</li>
+            <li data-i18n="upgrades.wear_li3">Strict instanceId identity — no ghost vehicles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMPLOYEES & DISPATCHER -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="staff.title">Employees, managers & the dispatcher</h2>
+        <p data-i18n="staff.desc">You can't run a global empire alone — hire specialists and let them automate the boring parts.</p>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <div class="icon purple">👷</div>
+          <h3 data-i18n="staff.spec_title">Specialized staff</h3>
+          <p data-i18n="staff.spec_desc">Dispatch is gated by specialized staff — you need the right people to send a truck, train, ship or plane on its way.</p>
+          <ul>
+            <li data-i18n="staff.spec_li1">Persistent assignment to vehicles</li>
+            <li data-i18n="staff.spec_li2">Fatigue mechanics: +3% active, −10% rest</li>
+            <li data-i18n="staff.spec_li3">Scaling salaries based on experience</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="icon blue">🧠</div>
+          <h3 data-i18n="staff.mgr_title">Managers with skill upgrades</h3>
+          <p data-i18n="staff.mgr_desc">Hire managers and level up their skills — every buff is computed centrally so stacking bonuses always behave correctly.</p>
+          <ul>
+            <li data-i18n="staff.mgr_li1">Payout bonuses, faster contracts, cheaper repairs</li>
+            <li data-i18n="staff.mgr_li2">Auto-repair & auto-refuel thresholds</li>
+            <li data-i18n="staff.mgr_li3">Training & passive bonus stacking</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="icon green">🤖</div>
+          <h3 data-i18n="staff.disp_title">The Dispatcher</h3>
+          <p data-i18n="staff.disp_desc">The Dispatcher is a premium automation employee that runs your contract board for you, choosing the most profitable jobs your fleet can fulfil.</p>
+          <ul>
+            <li data-i18n="staff.disp_li1">Free players: 3 vehicles per bulk-accept click</li>
+            <li data-i18n="staff.disp_li2">Premium: 10 per click, up to 54h auto-dispatch</li>
+            <li data-i18n="staff.disp_li3">Temporary boosts purchasable with gems (6h/12h/24h)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH & BUILDINGS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="research.title">Research & infrastructure</h2>
+        <p data-i18n="research.desc">Unlock advanced features through research, then physically build out your operation.</p>
+      </div>
+      <div class="grid-2">
+        <div class="big-card">
+          <div class="icon gold">🧪</div>
+          <h3 data-i18n="research.tree_title">Research tree</h3>
+          <p data-i18n="research.tree_desc">Research is mandatory to unlock bulk dispatch, auto features, premium contract generation and advanced logistics tooling.</p>
+          <ul style="margin-top:10px;padding-left:18px;color:var(--muted)">
+            <li data-i18n="research.tree_li1">Automation research (bulk accept, auto-dispatch)</li>
+            <li data-i18n="research.tree_li2">Vehicle capability unlocks</li>
+            <li data-i18n="research.tree_li3">Premium contract generator with nested % controls</li>
+            <li data-i18n="research.tree_li4">Logistics optimisation & routing improvements</li>
+          </ul>
+        </div>
+        <div class="big-card">
+          <div class="icon green">🏗️</div>
+          <h3 data-i18n="research.build_title">Build up to Level 10 infrastructure</h3>
+          <p data-i18n="research.build_desc">Construct and upgrade depots, garages, workshops, fuel stations, warehouses and logistics hubs. Each building gives flat and percentage bonuses.</p>
+          <ul style="margin-top:10px;padding-left:18px;color:var(--muted)">
+            <li data-i18n="research.build_li1">Increased fleet capacity & contract slots</li>
+            <li data-i18n="research.build_li2">Cheaper fuel, faster repairs, better payouts</li>
+            <li data-i18n="research.build_li3">Regional unlocks for premium contracts</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- META SYSTEMS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="meta_systems.title">Progression, rewards & live ops</h2>
+        <p data-i18n="meta_systems.desc">Long-term goals that keep the empire growing for hundreds of hours.</p>
+      </div>
+      <div class="cards four">
+        <div class="card"><div class="icon gold">🏆</div><h3 data-i18n="meta_systems.ach_title">90+ achievements</h3><p data-i18n="meta_systems.ach_desc">Tiered milestones with scaling rewards, claim-on-click design and cosmetic unlocks.</p></div>
+        <div class="card"><div class="icon blue">🎖️</div><h3 data-i18n="meta_systems.badges_title">Badges & titles</h3><p data-i18n="meta_systems.badges_desc">Cosmetic progression — show off your status with collectible badges and player titles.</p></div>
+        <div class="card"><div class="icon green">📅</div><h3 data-i18n="meta_systems.daily_title">Daily login & challenges</h3><p data-i18n="meta_systems.daily_desc">UTC reset streaks, daily challenges with a guaranteed 2-gem reward, and double rewards for Premium.</p></div>
+        <div class="card"><div class="icon purple">🌐</div><h3 data-i18n="meta_systems.events_title">Global events</h3><p data-i18n="meta_systems.events_desc">Dynamic real-time modifiers (war, fuel crisis, holiday boom…) reshape the economy on the fly.</p></div>
+        <div class="card"><div class="icon red">⛽</div><h3 data-i18n="meta_systems.res_title">Resource management</h3><p data-i18n="meta_systems.res_desc">Diesel, electricity and urea consumption with dedicated upgrades and storage.</p></div>
+        <div class="card"><div class="icon blue">💎</div><h3 data-i18n="meta_systems.gems_title">Gems economy</h3><p data-i18n="meta_systems.gems_desc">Premium currency for instant completes, unlocks, dispatcher boosts and cosmetic perks.</p></div>
+        <div class="card"><div class="icon gold">⭐</div><h3 data-i18n="meta_systems.prem_title">Premium pass</h3><p data-i18n="meta_systems.prem_desc">+10% payout, ad-free play, free contract rejects and up to 54h auto-dispatch.</p></div>
+        <div class="card"><div class="icon green">💾</div><h3 data-i18n="meta_systems.cloud_title">Cloud save</h3><p data-i18n="meta_systems.cloud_desc">Google Cloud sync across devices with strict conflict detection so you never lose progress.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRIP FLOW -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="trip.title">How a delivery actually works</h2>
+        <p data-i18n="trip.desc">The simulation engine ticks every 5 in-game minutes and supports 1×–8× speed.</p>
+      </div>
+      <div class="cards four">
+        <div class="card"><div class="icon blue">1️⃣</div><h3 data-i18n="trip.s1_title">Accept</h3><p data-i18n="trip.s1_desc">Pick a contract from the board (manually or via the Dispatcher). Feasibility is checked against your fleet.</p></div>
+        <div class="card"><div class="icon gold">2️⃣</div><h3 data-i18n="trip.s2_title">Reposition</h3><p data-i18n="trip.s2_desc">The assigned vehicle drives from its current location to the pickup city — consuming fuel along the way.</p></div>
+        <div class="card"><div class="icon green">3️⃣</div><h3 data-i18n="trip.s3_title">Load & transport</h3><p data-i18n="trip.s3_desc">A fixed 0.5h loading phase, then the cargo is hauled along the routed network in real-time.</p></div>
+        <div class="card"><div class="icon purple">4️⃣</div><h3 data-i18n="trip.s4_title">Deliver & earn</h3><p data-i18n="trip.s4_desc">Payment, reputation (+0.4 base), wear, employee fatigue and offline catch-up are all settled.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH / PLATFORMS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="tech.title">Built for mobile, ready for the world</h2>
+        <p data-i18n="tech.desc">Native Android via Capacitor, with a PWA fallback and full localization.</p>
+      </div>
+      <div class="cards">
+        <div class="card"><div class="icon blue">📱</div><h3 data-i18n="tech.mobile_title">Mobile-first UI</h3><p data-i18n="tech.mobile_desc">Safe-area insets, 100dvh layouts, disabled double-tap zoom, native AdMob banner sizing and gesture-friendly map controls.</p></div>
+        <div class="card"><div class="icon green">🌐</div><h3 data-i18n="tech.langs_title">24 languages</h3><p data-i18n="tech.langs_desc">EN, CS, DE, FR, ES, IT, NL, PL, HU, RO, UA, RU, PT-BR, TR, ID, AR, SV, NO, DA, FI, JA, KO, HI, PK — with safe placeholder interpolation.</p></div>
+        <div class="card"><div class="icon gold">🔒</div><h3 data-i18n="tech.save_title">Safe saves</h3><p data-i18n="tech.save_desc">Base64-obfuscated saves with FNV-1a hash, tamper detection, 3 manual slots + 1 autosave, forced saves on every purchase.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAGS / CTA -->
+  <section>
+    <div class="wrap">
+      <div class="cta-box">
+        <h2 style="font-size:1.6rem;margin-bottom:8px" data-i18n="cta.title">Built for tycoon players</h2>
+        <p style="color:var(--muted)" data-i18n="cta.desc">If you enjoy route planning, efficiency upgrades and watching a business grow, this game is for you.</p>
+        <div class="tag-list">
+          <span class="tag" data-i18n="cta.tag1">Transport routes</span>
+          <span class="tag" data-i18n="cta.tag2">Fleet management</span>
+          <span class="tag" data-i18n="cta.tag3">Business upgrades</span>
+          <span class="tag" data-i18n="cta.tag4">Operational planning</span>
+          <span class="tag" data-i18n="cta.tag5">Progressive expansion</span>
+          <span class="tag" data-i18n="cta.tag6">Tycoon gameplay</span>
+          <span class="tag" data-i18n="cta.tag7">Offline progress</span>
+          <span class="tag" data-i18n="cta.tag8">Cloud save</span>
+        </div>
+        <div style="margin-top:24px;display:flex;justify-content:center">
+          <a href="https://play.google.com/store/apps/details?id=com.akrij23.globallogisticsempire" target="_blank" rel="noopener" class="btn-play">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 1.7c-.4.4-.6 1-.6 1.8v17c0 .8.2 1.4.6 1.8l.1.1L13.4 12 3.7 1.6l-.1.1zm11.2 11.6l3.2 3.2-12.1 6.9c-.5.3-1 .3-1.5.1l10.4-10.2zM18.5 8.4c1 .6 1 2.1 0 2.6l-2.7 1.5-3.4-3.4 3.4-3.4 2.7 1.7z"/></svg>
+            <span class="play-labels"><small data-i18n="hero.btn_play_small">Get it now on</small><span data-i18n="hero.btn_play_main">Google Play</span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-box">
+        <strong data-i18n="footer.title">Global Logistics Empire</strong>
+        <span data-i18n="footer.text">Official project website hosted on GitHub Pages.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================ I18N SYSTEM ============================ -->
+  <script>
+  (function(){
+    const LANGUAGES = [
+      { code: 'en',    label: 'EN',    flag: '🇬🇧' },
+      { code: 'cs',    label: 'CS',    flag: '🇨🇿' },
+      { code: 'de',    label: 'DE',    flag: '🇩🇪' },
+      { code: 'fr',    label: 'FR',    flag: '🇫🇷' },
+      { code: 'es',    label: 'ES',    flag: '🇪🇸' },
+      { code: 'it',    label: 'IT',    flag: '🇮🇹' },
+      { code: 'nl',    label: 'NL',    flag: '🇳🇱' },
+      { code: 'pl',    label: 'PL',    flag: '🇵🇱' },
+      { code: 'hu',    label: 'HU',    flag: '🇭🇺' },
+      { code: 'ro',    label: 'RO',    flag: '🇷🇴' },
+      { code: 'uk',    label: 'UA',    flag: '🇺🇦' },
+      { code: 'ru',    label: 'RU',    flag: '🇷🇺' },
+      { code: 'pt-br', label: 'PT-BR', flag: '🇧🇷' },
+      { code: 'tr',    label: 'TR',    flag: '🇹🇷' },
+      { code: 'id',    label: 'ID',    flag: '🇮🇩' },
+      { code: 'ar',    label: 'AR',    flag: '🇸🇦' },
+      { code: 'sv',    label: 'SV',    flag: '🇸🇪' },
+      { code: 'no',    label: 'NO',    flag: '🇳🇴' },
+      { code: 'da',    label: 'DA',    flag: '🇩🇰' },
+      { code: 'fi',    label: 'FI',    flag: '🇫🇮' },
+      { code: 'ja',    label: 'JA',    flag: '🇯🇵' },
+      { code: 'ko',    label: 'KO',    flag: '🇰🇷' },
+      { code: 'hi',    label: 'HI',    flag: '🇮🇳' },
+      { code: 'pk',    label: 'PK',    flag: '🇵🇰' },
+    ];
+    const LS_KEY = 'gle_site_lang';
+    const FALLBACK = 'en';
+    const cache = {};
+    let fallbackDict = null;
+
+    function detectLang(){
+      const saved = localStorage.getItem(LS_KEY);
+      if (saved && LANGUAGES.some(l => l.code === saved)) return saved;
+      const nav = (navigator.language || 'en').toLowerCase();
+      if (nav.startsWith('pt-br') || nav === 'pt-br' || nav.startsWith('pt')) return 'pt-br';
+      const base = nav.split('-')[0];
+      const map = { ua:'uk' };
+      const code = map[base] || base;
+      return LANGUAGES.some(l => l.code === code) ? code : FALLBACK;
+    }
+
+    async function loadDict(code){
+      if (cache[code]) return cache[code];
+      try{
+        const res = await fetch('locales/' + code + '.json', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('http ' + res.status);
+        cache[code] = await res.json();
+        return cache[code];
+      }catch(e){
+        console.warn('[i18n] failed to load', code, e);
+        return null;
+      }
+    }
+
+    function applyDict(dict){
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const val = (dict && dict[key]) || (fallbackDict && fallbackDict[key]);
+        if (val == null) return;
+        const attr = el.getAttribute('data-i18n-attr');
+        if (attr) el.setAttribute(attr, val);
+        else el.textContent = val;
+      });
+    }
+
+    async function setLanguage(code){
+      if (!LANGUAGES.some(l => l.code === code)) code = FALLBACK;
+      if (!fallbackDict) fallbackDict = await loadDict(FALLBACK);
+      const dict = code === FALLBACK ? fallbackDict : await loadDict(code);
+      applyDict(dict || fallbackDict || {});
+      localStorage.setItem(LS_KEY, code);
+      document.documentElement.setAttribute('lang', code);
+      document.documentElement.setAttribute('dir', code === 'ar' ? 'rtl' : 'ltr');
+      const meta = LANGUAGES.find(l => l.code === code);
+      document.getElementById('langFlag').textContent = meta.flag;
+      document.getElementById('langCode').textContent = meta.label;
+      renderMenu(code);
+    }
+
+    function renderMenu(active){
+      const menu = document.getElementById('langMenu');
+      menu.innerHTML = '';
+      LANGUAGES.forEach(l => {
+        const btn = document.createElement('button');
+        btn.className = 'lang-item' + (l.code === active ? ' active' : '');
+        btn.setAttribute('role','option');
+        btn.innerHTML = '<span class="flag">'+l.flag+'</span><span>'+l.label+'</span><span class="code">'+l.code.toUpperCase()+'</span>';
+        btn.addEventListener('click', () => {
+          closeMenu();
+          setLanguage(l.code);
+        });
+        menu.appendChild(btn);
+      });
+    }
+
+    function openMenu(){ document.getElementById('langMenu').classList.add('open'); document.getElementById('langBtn').setAttribute('aria-expanded','true'); }
+    function closeMenu(){ document.getElementById('langMenu').classList.remove('open'); document.getElementById('langBtn').setAttribute('aria-expanded','false'); }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('langBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = document.getElementById('langMenu').classList.contains('open');
+        open ? closeMenu() : openMenu();
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.lang-switch')) closeMenu();
+      });
+      setLanguage(detectLang());
+    });
+  })();
+  </script>
+</body>
+</html>
