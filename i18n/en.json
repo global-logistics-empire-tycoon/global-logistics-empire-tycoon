@@ -2,23 +2,6 @@
   "meta.title": "Global Logistics Empire — Build a Worldwide Transport Tycoon",
   "meta.description": "Global Logistics Empire is a deep tycoon & logistics simulation. Manage trucks, trains, ships and planes, hire staff, research tech, build infrastructure and grow from a single garage to a global empire.",
   "nav.brand": "Global Logistics Empire",
-  "nav.toc": "Contents",
-
-  "toc.title": "Page contents",
-  "toc.hero": "Home",
-  "toc.about_me": "About me",
-  "toc.numbers": "Numbers",
-  "toc.fleet": "Fleet",
-  "toc.features": "Features",
-  "toc.upgrades": "Upgrades",
-  "toc.staff": "Staff & dispatcher",
-  "toc.research": "Research & buildings",
-  "toc.meta_systems": "Progression",
-  "toc.trip": "Delivery flow",
-  "toc.tech": "Tech & platforms",
-  "toc.roadmap": "Future development",
-  "toc.feedback": "Feedback",
-
   "hero.eyebrow": "🌍 Transport & Logistics Tycoon",
   "hero.badge_play": "Available on Google Play",
   "hero.title_main": "Global Logistics Empire",
@@ -37,14 +20,6 @@
   "hero.stat3_val": "Garage → empire",
   "hero.stat4_label": "Style",
   "hero.stat4_val": "Tycoon simulation",
-
-  "about.title": "About me",
-  "about.lead": "Hi — I'm the developer behind Global Logistics Empire. A few honest words about what this project is:",
-  "about.li1": "I'm an amateur developer — this is a passion project, not a studio production.",
-  "about.li2": "The game is still very much in development and I keep adding new content.",
-  "about.li3": "Progress is slower because I work on it in my free time, around real life.",
-  "about.li4": "My goal is to keep improving the game step by step, with the community's help.",
-
   "numbers.title": "The game in numbers",
   "numbers.desc": "A massive amount of content to plan, upgrade, unlock and master.",
   "numbers.n1": "Transport modes",
@@ -55,7 +30,6 @@
   "numbers.n6": "Languages",
   "numbers.n7": "Game speed",
   "numbers.n8": "Premium auto-dispatch",
-
   "fleet.title": "Four transport modes, one global fleet",
   "fleet.desc": "Every mode has its own physics, fuel logic, capacity and route network.",
   "fleet.road_title": "Road",
@@ -66,7 +40,6 @@
   "fleet.sea_desc": "Coastal, cargo, container, tanker, reefer",
   "fleet.air_title": "Air",
   "fleet.air_desc": "Small, medium, large cargo planes & jets",
-
   "features.title": "Core gameplay features",
   "features.desc": "Deep simulation systems wrapped in a friendly mobile UI.",
   "features.contracts_title": "Smart contract board",
@@ -84,7 +57,6 @@
   "features.economy_li1": "Dynamic events (war, fuel crisis, booms…)",
   "features.economy_li2": "Reputation curve with diminishing returns",
   "features.economy_li3": "Scaling salary & maintenance costs",
-
   "upgrades.title": "Vehicle customization & upgrades",
   "upgrades.desc": "Every vehicle is an individual asset — name it, paint it, upgrade it, attach trailers and keep it running.",
   "upgrades.lv33_title": "Up to Level 33 upgrades",
@@ -97,7 +69,6 @@
   "upgrades.wear_li1": "22 SVG shapes, colour-coded by transport mode",
   "upgrades.wear_li2": "Custom names & emoji prefixes for identification",
   "upgrades.wear_li3": "Strict instanceId identity — no ghost vehicles",
-
   "staff.title": "Employees, managers & the dispatcher",
   "staff.desc": "You can't run a global empire alone — hire specialists and let them automate the boring parts.",
   "staff.spec_title": "Specialized staff",
@@ -115,7 +86,6 @@
   "staff.disp_li1": "Free players: 3 vehicles per bulk-accept click",
   "staff.disp_li2": "Premium: 10 per click, up to 54h auto-dispatch",
   "staff.disp_li3": "Temporary boosts purchasable with gems (6h/12h/24h)",
-
   "research.title": "Research & infrastructure",
   "research.desc": "Unlock advanced features through research, then physically build out your operation.",
   "research.tree_title": "Research tree",
@@ -129,7 +99,6 @@
   "research.build_li1": "Increased fleet capacity & contract slots",
   "research.build_li2": "Cheaper fuel, faster repairs, better payouts",
   "research.build_li3": "Regional unlocks for premium contracts",
-
   "meta_systems.title": "Progression, rewards & live ops",
   "meta_systems.desc": "Long-term goals that keep the empire growing for hundreds of hours.",
   "meta_systems.ach_title": "90+ achievements",
@@ -148,7 +117,6 @@
   "meta_systems.prem_desc": "+10% payout, ad-free play, free contract rejects and up to 54h auto-dispatch.",
   "meta_systems.cloud_title": "Cloud save",
   "meta_systems.cloud_desc": "Google Cloud sync across devices with strict conflict detection so you never lose progress.",
-
   "trip.title": "How a delivery actually works",
   "trip.desc": "The simulation engine ticks every 5 in-game minutes and supports 1×–8× speed.",
   "trip.s1_title": "Accept",
@@ -159,7 +127,6 @@
   "trip.s3_desc": "A fixed 0.5h loading phase, then the cargo is hauled along the routed network in real-time.",
   "trip.s4_title": "Deliver & earn",
   "trip.s4_desc": "Payment, reputation (+0.4 base), wear, employee fatigue and offline catch-up are all settled.",
-
   "tech.title": "Built for mobile, ready for the world",
   "tech.desc": "Native Android via Capacitor, with a PWA fallback and full localization.",
   "tech.mobile_title": "Mobile-first UI",
@@ -168,32 +135,6 @@
   "tech.langs_desc": "EN, CS, DE, FR, ES, IT, NL, PL, HU, RO, UA, RU, PT-BR, TR, ID, AR, SV, NO, DA, FI, JA, KO, HI, PK — with safe placeholder interpolation.",
   "tech.save_title": "Safe saves",
   "tech.save_desc": "Base64-obfuscated saves with FNV-1a hash, tamper detection, 3 manual slots + 1 autosave, forced saves on every purchase.",
-
-  "roadmap.title": "Future development",
-  "roadmap.desc": "What I'm planning next. Right now I'm mostly focused on graphical upgrades (better vehicle art and in-game visuals).",
-  "roadmap.note": "Currently in progress: improved vehicle artwork.",
-  "roadmap.f1_title": "Better graphics",
-  "roadmap.f1_desc": "Upgraded artwork for vehicles, buildings and UI elements.",
-  "roadmap.f2_title": "In-game sounds",
-  "roadmap.f2_desc": "Engine sounds, ambient audio and UI feedback.",
-  "roadmap.f3_title": "Online leaderboards",
-  "roadmap.f3_desc": "Compete with other players globally on revenue, fleet size and milestones.",
-  "roadmap.f4_title": "Combined contracts",
-  "roadmap.f4_desc": "Multi-leg jobs that chain road, rail, sea and air for bigger payouts.",
-  "roadmap.f5_title": "More realistic map",
-  "roadmap.f5_desc": "Improved geography, road network and regional detail.",
-  "roadmap.f6_title": "Cooperative mode",
-  "roadmap.f6_desc": "Team up with friends to grow a shared logistics empire.",
-
-  "feedback.title": "Suggestions & feedback",
-  "feedback.desc": "Tell me what you'd love to see in the game. Every idea helps shape the roadmap.",
-  "feedback.name_label": "Your name",
-  "feedback.name_ph": "How should I call you? (optional)",
-  "feedback.msg_label": "Your message",
-  "feedback.msg_ph": "What would you love to see in the game?",
-  "feedback.submit": "Send feedback",
-  "feedback.sent": "Thanks! Your mail client should now open with your message ready to send.",
-
   "cta.title": "Built for tycoon players",
   "cta.desc": "If you enjoy route planning, efficiency upgrades and watching a business grow, this game is for you.",
   "cta.tag1": "Transport routes",
@@ -204,7 +145,6 @@
   "cta.tag6": "Tycoon gameplay",
   "cta.tag7": "Offline progress",
   "cta.tag8": "Cloud save",
-
   "footer.title": "Global Logistics Empire",
   "footer.text": "Official project website hosted on GitHub Pages."
 }
