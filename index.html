@@ -578,6 +578,10 @@
     ];
     const LS_KEY = 'gle_site_lang';
     const FALLBACK = 'en';
+    const FILE_ALIASES = {
+      uk: ['uk', 'ua'],
+      'pt-br': ['pt-br', 'pt-BR', 'ptbr'],
+    };
     const cache = {};
     let fallbackDict = null;
 
@@ -592,17 +596,26 @@
       return LANGUAGES.some(l => l.code === code) ? code : FALLBACK;
     }
 
+    async function fetchFirst(names){
+      for (const name of names) {
+        try{
+          const res = await fetch('locales/' + name + '.json', { cache: 'no-cache' });
+          if (res.ok) return await res.json();
+        }catch(_){ /* try next alias */ }
+      }
+      return null;
+    }
+
     async function loadDict(code){
       if (cache[code]) return cache[code];
-      try{
-        const res = await fetch('locales/' + code + '.json', { cache: 'no-cache' });
-        if (!res.ok) throw new Error('http ' + res.status);
-        cache[code] = await res.json();
+      const names = FILE_ALIASES[code] || [code];
+      const dict = await fetchFirst(names);
+      if (dict) {
+        cache[code] = dict;
         return cache[code];
-      }catch(e){
-        console.warn('[i18n] failed to load', code, e);
-        return null;
       }
+      console.warn('[i18n] failed to load', code, '— tried', names);
+      return null;
     }
 
     function applyDict(dict){
